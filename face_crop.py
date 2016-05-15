@@ -65,7 +65,7 @@ for file in files:
         cv2.waitKey(0)
         cv2.destroyAllWindows()
         with open('NoFaces.txt', 'a') as f:
-            f.write(os.path.basename(file))
+            f.write(os.path.basename(file) + '\n')
 
     else:
         # Draw a rectangle around the faces
@@ -79,7 +79,7 @@ for file in files:
 
         if len(faces) > 1:
             with open('MultipleFaces.txt', 'a') as f:
-                f.write(os.path.basename(file))
+                f.write(os.path.basename(file) + '\n')
 
         cv2.imshow('img',image)
         cv2.waitKey(0)
