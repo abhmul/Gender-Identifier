@@ -11,7 +11,7 @@ files=glob.glob("*.png")
 for file in files:
 
     # Read the image
-    image = cv2.imread(file)
+    image = cv2.imread(file, 0)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     faces = []
