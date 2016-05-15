@@ -1,5 +1,6 @@
 import cv2
 import glob
+import os
 
 # cascPath = "../../data/haarcascades/haarcascade_frontalface_alt.xml"
 cascPath = "haarcascade_frontalface_default.xml"
@@ -56,6 +57,8 @@ for file in files:
         cv2.imshow('img',image)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
+        with open('NoFaces.txt', 'w') as f:
+            f.write(os.path.basename(file))
 
     else:
         # Draw a rectangle around the faces
