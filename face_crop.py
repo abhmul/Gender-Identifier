@@ -35,7 +35,7 @@ for file in files:
         # Detect faces in the image
         faces = faceCascade.detectMultiScale(
             gray,
-            scaleFactor=1.3,
+            scaleFactor=1.0,
             minNeighbors=5,
             minSize=(30, 30)
             # flags = cv2.cv.CV_HAAR_SCALE_IMAGE
