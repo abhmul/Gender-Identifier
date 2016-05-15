@@ -28,9 +28,9 @@ for file in files:
             dst = cv2.warpAffine(image,M,(cols,rows))
 
             # Show the image
-            cv2.imshow('img',dst)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
+            # cv2.imshow('img',dst)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
 
         # Detect faces in the image
         faces = faceCascade.detectMultiScale(
