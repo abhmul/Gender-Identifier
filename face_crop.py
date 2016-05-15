@@ -1,12 +1,13 @@
 import cv2
 import glob
 
+# cascPath = "../../data/haarcascades/haarcascade_frontalface_alt.xml"
 cascPath = "haarcascade_frontalface_default.xml"
 
 # Create the haar cascade
 faceCascade = cv2.CascadeClassifier(cascPath)
 
-files=glob.glob("*.jpg")
+files=glob.glob("../*.jpg")
 for file in files:
 
     # Read the image
@@ -14,13 +15,13 @@ for file in files:
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # Detect faces in the image
-    faces = faceCascade.detectMultiScale(
-        gray,
-        scaleFactor=1.1,
-        minNeighbors=5
+    faces = faceCascade.detectMultiScale(gray, 1.1, 5)
+        # gray,
+        # scaleFactor=1.1,
+        # minNeighbors=5
         # minSize=(30, 30),
         # flags = cv2.cv.CV_HAAR_SCALE_IMAGE
-    )
+
 
     print "Found {0} face(s)!".format(len(faces))
 
