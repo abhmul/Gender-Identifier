@@ -36,12 +36,12 @@ for file in files:
             gray,
             scaleFactor=1.1,
             minNeighbors=5,
-            minSize=(15, 15)
+            minSize=(10, 10)
             # flags = cv2.cv.CV_HAAR_SCALE_IMAGE
         )
 
         # Increment degree by 15 for each iteration
-        deg += 15
+        deg += 10
 
 
     print "Found {0} face(s)!".format(len(faces))
