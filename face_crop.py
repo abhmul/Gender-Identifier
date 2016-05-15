@@ -7,7 +7,7 @@ cascPath = "haarcascade_frontalface_default.xml"
 # Create the haar cascade
 faceCascade = cv2.CascadeClassifier(cascPath)
 
-files=glob.glob("*.jpg")
+files=glob.glob("*.png")
 for file in files:
 
     # Read the image
