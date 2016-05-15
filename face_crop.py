@@ -62,7 +62,7 @@ for file in files:
         cv2.imshow('img',image)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
-        with open('NoFaces.txt', 'w') as f:
+        with open('NoFaces.txt', 'a') as f:
             f.write(os.path.basename(file))
 
     else:
@@ -76,7 +76,7 @@ for file in files:
             roi_color = image[y:y+h, x:x+w]
 
         if len(faces) > 1:
-            with open('MultipleFaces.txt', 'w') as f:
+            with open('MultipleFaces.txt', 'a') as f:
                 f.write(os.path.basename(file))
 
         cv2.imshow('img',image)
