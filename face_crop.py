@@ -59,10 +59,10 @@ for file in files:
         image = dst
 
     # Crop Padding
-    left = 10
-    right = 10
-    top = 10
-    bottom = 10
+    left = 0
+    right = 0
+    top = 0
+    bottom = 0
 
     if len(faces) == 0:
         cv2.imshow('img',image)
@@ -85,7 +85,7 @@ for file in files:
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
-            image  = image[y-top:y+h+bottom, x-left:x+w+right]
+            image = image[y-top:y+h+bottom, x-left:x+w+right]
 
             print "cropped_{1}{0}".format(str(file),str(x))
             cv2.imwrite("cropped_{1}_{0}".format(str(file),str(x)), image)
