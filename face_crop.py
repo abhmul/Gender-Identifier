@@ -11,7 +11,7 @@ files=glob.glob("*.png")
 for file in files:
 
     # Read the image
-    image = cv2.imread(file, 0)
+    image = cv2.imread(file)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     faces = []
@@ -22,9 +22,14 @@ for file in files:
 
         # Rotate the image
         if deg != 0:
-            rows,cols = image.shape
+            rows,cols, ch = image.shape
             M = cv2.getRotationMatrix2D((cols/2,rows/2),deg,1)
             dst = cv2.warpAffine(image,M,(cols,rows))
+
+            # Show the image
+            cv2.imshow('img',image)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
 
         # Detect faces in the image
         faces = faceCascade.detectMultiScale(
