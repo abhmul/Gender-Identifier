@@ -20,7 +20,7 @@ for file in files:
     scale_factors = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8]
 
     # Keep on rotating picture until face is found
-    while len(faces)==0 and deg <= 360:
+    while len(faces)!=1 and deg <= 360:
 
         # Rotate the image
         if deg != 0:
