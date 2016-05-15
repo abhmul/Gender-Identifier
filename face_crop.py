@@ -65,9 +65,9 @@ for file in files:
     bottom = 0
 
     if len(faces) == 0:
-        cv2.imshow('img',image)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        # cv2.imshow('img',image)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
         with open('NoFaces.txt', 'a') as f:
             f.write(os.path.basename(file) + '\n')
 
