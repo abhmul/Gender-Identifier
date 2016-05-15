@@ -35,9 +35,9 @@ for file in files:
         # Detect faces in the image
         faces = faceCascade.detectMultiScale(
             gray,
-            scaleFactor=1.1,
+            scaleFactor=1.3,
             minNeighbors=5,
-            minSize=(10, 10)
+            minSize=(30, 30)
             # flags = cv2.cv.CV_HAAR_SCALE_IMAGE
         )
 
@@ -70,9 +70,14 @@ for file in files:
             roi_gray = gray[y:y+h, x:x+w]
             roi_color = image[y:y+h, x:x+w]
 
+        if len(faces) > 1:
+            with open('MultipleFaces.txt', 'w') as f:
+                f.write(os.path.basename(file))
+
         cv2.imshow('img',image)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
+
 
 
             # image  = image[y-top:y+h+bottom, x-left:x+w+right]
