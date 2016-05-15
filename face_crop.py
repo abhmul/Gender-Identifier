@@ -14,14 +14,30 @@ for file in files:
     image = cv2.imread(file)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # Detect faces in the image
-    faces = faceCascade.detectMultiScale(
-        gray,
-        scaleFactor=1.1,
-        minNeighbors=5,
-        minSize=(30, 30)
-        # flags = cv2.cv.CV_HAAR_SCALE_IMAGE
-    )
+    faces = []
+    deg = 0
+
+    # Keep on rotating picture until face is found
+    while len(faces)==0 or deg <= 360:
+
+        # Rotate the image
+        if deg != 0:
+            rows,cols = image.shape
+            M = cv2.getRotationMatrix2D((cols/2,rows/2),deg,1)
+            dst = cv2.warpAffine(image,M,(cols,rows))
+
+        # Detect faces in the image
+        faces = faceCascade.detectMultiScale(
+            gray,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30)
+            # flags = cv2.cv.CV_HAAR_SCALE_IMAGE
+        )
+
+        # Increment degree by 15 for each iteration
+        deg += 15
+
 
     print "Found {0} face(s)!".format(len(faces))
 
