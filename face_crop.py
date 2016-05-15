@@ -77,22 +77,22 @@ for file in files:
             print x, y, w, h
 
             # Debugging boxes
-            cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            roi_gray = gray[y:y+h, x:x+w]
-            roi_color = image[y:y+h, x:x+w]
+            # cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+            # roi_gray = gray[y:y+h, x:x+w]
+            # roi_color = image[y:y+h, x:x+w]
 
-            cv2.imshow('img',image)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
+            # cv2.imshow('img',image)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
 
             image = image[y-top:y+h+bottom, x-left:x+w+right]
 
             print "cropped_{1}{0}".format(str(file),str(x))
             cv2.imwrite("cropped_{1}_{0}".format(str(file),str(x)), image)
 
-            cv2.imshow('img',image)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
+            # cv2.imshow('img',image)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
 
         if len(faces) > 1:
             with open('MultipleFaces.txt', 'a') as f:
