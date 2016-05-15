@@ -15,13 +15,13 @@ for file in files:
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # Detect faces in the image
-    faces = faceCascade.detectMultiScale(gray, 1.1, 5)
-        # gray,
-        # scaleFactor=1.1,
-        # minNeighbors=5
-        # minSize=(30, 30),
+    faces = faceCascade.detectMultiScale(
+        gray,
+        scaleFactor=1.1,
+        minNeighbors=5,
+        minSize=(30, 30)
         # flags = cv2.cv.CV_HAAR_SCALE_IMAGE
-
+    )
 
     print "Found {0} face(s)!".format(len(faces))
 
@@ -31,15 +31,23 @@ for file in files:
     top = 10
     bottom = 10
 
-    # Draw a rectangle around the faces
-    for (x, y, w, h) in faces:
-        print x, y, w, h
+    if len(faces) == 0:
+        cv2.imshow('img',file)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
-        # Debugging boxes
-        # cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    else:
+        # Draw a rectangle around the faces
+        for (x, y, w, h) in faces:
+            print x, y, w, h
+
+            # Debugging boxes
+            cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+            roi_gray = gray[y:y+h, x:x+w]
+            roi_color = image[y:y+h, x:x+w]
 
 
-        image  = image[y-top:y+h+bottom, x-left:x+w+right]
+            # image  = image[y-top:y+h+bottom, x-left:x+w+right]
 
-        print "cropped_{1}{0}".format(str(file),str(x))
-        cv2.imwrite("cropped_{1}_{0}".format(str(file),str(x)), image)
+            # print "cropped_{1}{0}".format(str(file),str(x))
+            # cv2.imwrite("cropped_{1}_{0}".format(str(file),str(x)), image)
