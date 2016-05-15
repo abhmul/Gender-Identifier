@@ -32,7 +32,7 @@ for file in files:
     bottom = 10
 
     if len(faces) == 0:
-        cv2.imshow('img',file)
+        cv2.imshow('img',image)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
