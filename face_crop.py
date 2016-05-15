@@ -33,6 +33,8 @@ for file in files:
             # cv2.waitKey(0)
             # cv2.destroyAllWindows()
 
+            gray = cv2.cvtColor(dst, cv2.COLOR_BGR2GRAY)
+
         for scale_factor in scale_factors:
             # Detect faces in the image
             faces = faceCascade.detectMultiScale(
