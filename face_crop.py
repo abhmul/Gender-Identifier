@@ -55,7 +55,7 @@ for file in files:
     print "Found {0} face(s)!".format(len(faces))
 
     # Use dst as image if it was rotated
-    if deg > 0:
+    if deg > 10:
         image = dst
 
     # Crop Padding
