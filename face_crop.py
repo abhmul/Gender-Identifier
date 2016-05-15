@@ -17,6 +17,7 @@ for file in files:
 
     faces = []
     deg = 0
+    scale_factors = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8]
 
     # Keep on rotating picture until face is found
     while len(faces)==0 and deg <= 360:
@@ -32,14 +33,18 @@ for file in files:
             # cv2.waitKey(0)
             # cv2.destroyAllWindows()
 
-        # Detect faces in the image
-        faces = faceCascade.detectMultiScale(
-            gray,
-            scaleFactor=1.01,
-            minNeighbors=5,
-            minSize=(30, 30)
-            # flags = cv2.cv.CV_HAAR_SCALE_IMAGE
-        )
+        for scale_factor in scale_factors:
+            # Detect faces in the image
+            faces = faceCascade.detectMultiScale(
+                gray,
+                scaleFactor=scale_factor,
+                minNeighbors=5,
+                minSize=(30, 30)
+                # flags = cv2.cv.CV_HAAR_SCALE_IMAGE
+            )
+
+            if len(faces) == 1:
+                break
 
         # Increment degree by 15 for each iteration
         deg += 10
