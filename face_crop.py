@@ -36,7 +36,7 @@ for file in files:
             gray,
             scaleFactor=1.1,
             minNeighbors=5,
-            minSize=(30, 30)
+            minSize=(15, 15)
             # flags = cv2.cv.CV_HAAR_SCALE_IMAGE
         )
 
