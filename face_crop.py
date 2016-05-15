@@ -17,7 +17,7 @@ for file in files:
 
     faces = []
     deg = 0
-    scale_factors = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8]
+    scale_factors = [1.02, 1.05, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2.0, 2.2, 2.4, 2.7, 3.0]
 
     # Keep on rotating picture until face is found
     while len(faces)!=1 and deg <= 360:
@@ -53,6 +53,10 @@ for file in files:
 
 
     print "Found {0} face(s)!".format(len(faces))
+
+    # Use dst as image if it was rotated
+    if deg > 0:
+        image = dst
 
     # Crop Padding
     left = 10
