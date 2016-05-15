@@ -24,10 +24,10 @@ for file in files:
         if deg != 0:
             rows,cols, ch = image.shape
             M = cv2.getRotationMatrix2D((cols/2,rows/2),deg,1)
-            image = cv2.warpAffine(image,M,(cols,rows))
+            dst = cv2.warpAffine(image,M,(cols,rows))
 
             # Show the image
-            cv2.imshow('img',image)
+            cv2.imshow('img',dst)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
