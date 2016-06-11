@@ -1,7 +1,7 @@
 import os
 import requests
 
-__author__ = 'Abhijeet Mulgund & Philip Masek'
+__author__ = 'Abhijeet Mulgund'
 
 genderedListMaledir = "genderedNamesMale.txt"
 genderedListFemaledir = "genderedNamesFemale.txt"
@@ -14,7 +14,6 @@ femaleFolder = "../lfwcrop_grey/female"
 
 
 def build_name_text(rootdir, fileNamesdir):
-
     fileNames = open(fileNamesdir, 'a')
 
     for root, subFolders, files in os.walk(rootdir):
@@ -25,11 +24,8 @@ def build_name_text(rootdir, fileNamesdir):
 
 
 def build_gender_text(genderedListMaledir, genderedListFemaledir, maleFolder, femaleFolder):
-
-
     genderedListMale = open(genderedListMaledir, 'a')
     genderedListFemale = open(genderedListFemaledir, 'a')
-
 
     for root, subFolders, files in os.walk(maleFolder):
         for file in files:
@@ -41,14 +37,11 @@ def build_gender_text(genderedListMaledir, genderedListFemaledir, maleFolder, fe
             genderedListFemale.write(file)
             genderedListFemale.write("\n")
 
-
     genderedListMale.close()
     genderedListFemale.close()
 
 
-
 def genderize(fileNamesdir, genderedListMaledir, genderedListFemaledir, ungenderedListdir, threshold=0.9):
-
     count = 0
 
     genderedListMale = open(genderedListMaledir, 'r')
@@ -77,6 +70,7 @@ def genderize(fileNamesdir, genderedListMaledir, genderedListFemaledir, ungender
 
     for file in files:
         fileSplit = file.split("_")
+        print "Examining New File..."
 
         if file not in fileSet:
             count += 1
@@ -84,8 +78,6 @@ def genderize(fileNamesdir, genderedListMaledir, genderedListFemaledir, ungender
             genderedListMale = open(genderedListMaledir, 'a')
             genderedListFemale = open(genderedListFemaledir, 'a')
             ungenderedList = open(ungenderedListdir, 'a')
-
-
 
             if fileSplit[0] in maleNames:
                 genderedListMale.write(file + "\n")
@@ -101,11 +93,12 @@ def genderize(fileNamesdir, genderedListMaledir, genderedListFemaledir, ungender
                 print fileSplit[0], " placed in UNGENDERED"
                 print "No Call"
             else:
+                print "Calling API..."
                 result = requests.get("http://api.genderize.io?name=%s" % fileSplit[0])
                 print result.headers
                 result = result.json()
                 print "API was called for ", fileSplit[0]
-                if 'error' not in result.keys() and 'gender' in result.keys():
+                if 'error' not in result.keys() and 'probability' in result.keys():
                     print result['probability'], "  ", result['gender']
 
                     if float(result['probability']) > threshold:
@@ -118,6 +111,12 @@ def genderize(fileNamesdir, genderedListMaledir, genderedListFemaledir, ungender
                             genderedListFemale.write(file + "\n")
                             femaleNames.add(fileSplit[0])
                             print fileSplit[0], " placed in FEMALES"
+
+                    else:
+                        print result['name']
+                        ungenderedList.write(file + "\n")
+                        ungenderedNames.add(fileSplit[0])
+                        print fileSplit[0], " placed in UNGENDERED"
                 else:
                     try:
                         print result['name']
@@ -126,10 +125,7 @@ def genderize(fileNamesdir, genderedListMaledir, genderedListFemaledir, ungender
                         print fileSplit[0], " placed in UNGENDERED"
 
                     except:
-                        print result['error']
                         return None
-
-
 
             fileSet.add(file)
 
@@ -142,5 +138,6 @@ def genderize(fileNamesdir, genderedListMaledir, genderedListFemaledir, ungender
     ungenderedList.close()
 
     print "All files have been genderized"
+
 
 genderize(fileNamesdir, genderedListMaledir, genderedListFemaledir, ungenderedListdir)

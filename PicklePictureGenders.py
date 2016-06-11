@@ -3,6 +3,7 @@ import gzip
 import numpy as np
 from PIL import Image
 import os
+import random
 
 size = (128,128)
 num_pics = 3896
@@ -20,7 +21,7 @@ def gzip_compress(filename):
 
 
 
-def pickle_images(size, num_pics, output_file='PictureGenders.txt', train_percent=.7, val_percent=.15):
+def pickle_images(size, num_pics, output_file='PictureGenders.txt', train_percent=.7, val_percent=.15, resize=True, lfw=False, genderedListMaledir="genderedMaleNamesReduced.txt", genderedListFemaledir="genderedFemaleNamesReduced.txt"):
 
     train_size = int(round(train_percent*num_pics))
     val_size = int(round(val_percent*num_pics))
@@ -40,11 +41,21 @@ def pickle_images(size, num_pics, output_file='PictureGenders.txt', train_percen
 
     print 'Writing Images into Arrays'
 
-    for i in os.listdir(os.getcwd()):
-        if i.endswith(".png"):
-            img = Image.open(i).convert('L')
-            img = img.resize(size)
-            # REMEMBER to add outputs to list
+    if lfw:
+        glmd = open(genderedListMaledir)
+        glfd = open(genderedListFemaledir)
+        males = set(glmd.read().split("\n")).difference({""})
+        females = set(glfd.read().split("\n")).difference({""})
+        glmd.close()
+        glfd.close()
+        files = list(males.union(females))
+        random.shuffle(files)
+        # print files[-1]
+
+        for i in files:
+            if i == "":
+                print "WWERWERA"
+            img = Image.open("../lfwcrop_grey/faces/" + i).convert('L')
             img = im2array(img)
             if count < train_size:
                 training_images[count] = img
@@ -52,27 +63,53 @@ def pickle_images(size, num_pics, output_file='PictureGenders.txt', train_percen
                 validation_images[count-train_size] = img
             else:
                 test_images[count-train_size-val_size] = img
+
+
+            gender = (i in males)
+
+            if count < train_size:
+                training_outputs[count] = gender
+            elif count < train_size + val_size:
+                validation_outputs[count-train_size] = gender
+            else:
+                test_outputs[count-train_size-val_size] = gender
             count += 1
 
+    else:
+        for i in os.listdir(os.getcwd()):
+            if i.endswith(".png"):
+                img = Image.open(i).convert('L')
+                if resize:
+                    img = img.resize(size)
+                # REMEMBER to add outputs to list
+                img = im2array(img)
+                if count < train_size:
+                    training_images[count] = img
+                elif count < train_size + val_size:
+                    validation_images[count-train_size] = img
+                else:
+                    test_images[count-train_size-val_size] = img
+                count += 1
 
-    print 'Reading outputs file'
 
-    file_outputs = open(output_file)
+        print 'Reading outputs file'
 
-    print 'Writing Outputs into Array'
+        file_outputs = open(output_file)
 
-    count=0
-    for line in file_outputs:
-        gender = bool(int(line))
-        if count < train_size:
-            training_outputs[count] = gender
-        elif count < train_size + val_size:
-            validation_outputs[count-train_size] = gender
-        else:
-            test_outputs[count-train_size-val_size] = gender
-        count += 1
+        print 'Writing Outputs into Array'
 
-    file_outputs.close()
+        count=0
+        for line in file_outputs:
+            gender = bool(int(line))
+            if count < train_size:
+                training_outputs[count] = gender
+            elif count < train_size + val_size:
+                validation_outputs[count-train_size] = gender
+            else:
+                test_outputs[count-train_size-val_size] = gender
+            count += 1
+
+        file_outputs.close()
 
     training_set = (training_images, training_outputs)
     validation_set = (validation_images, validation_outputs)
@@ -80,11 +117,24 @@ def pickle_images(size, num_pics, output_file='PictureGenders.txt', train_percen
 
     print 'Pickling Data Set'
 
-    pickle.dump((training_set, validation_set, test_set), open('genders.pkl', 'wb'))
+    pickle.dump((training_set, validation_set, test_set), open('genders_lfw.pkl', 'wb'))
 
     print 'Gzip compressing pickled dataset'
 
-    gzip_compress('genders.pkl')
+    gzip_compress('genders_lfw.pkl')
 
-pickle_images(size, num_pics)
+size_lfw = (64,64)
+
+genderedListMaledir = "genderedMaleNamesReduced.txt"
+genderedListFemaledir = "genderedFemaleNamesReduced.txt"
+ungenderedListdir = "ungenderedNames.txt"
+glmd = open(genderedListMaledir)
+glfd = open(genderedListFemaledir)
+num_pics_lfw = len(set(glmd.read().split("\n")).union(set(glfd.read().split("\n"))).difference({""}))
+glmd.close()
+glfd.close()
+print num_pics_lfw
+
+
+pickle_images(size_lfw, num_pics_lfw, resize=False, lfw=True)
 
